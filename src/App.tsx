@@ -288,7 +288,7 @@ export default function App() {
     }
   };
 
-  // Fetch word recovery from backend API
+  // Fetch word recovery from backend API (with offline / static host fallback)
   const fetchCandidateRecovery = async (utterance: string) => {
     try {
       const res = await fetch('/api/recover-word', {
@@ -300,15 +300,32 @@ export default function App() {
           conversationContext: messages.slice(-3),
         }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setActiveCandidateWord(data.leadingCandidate || 'sauce');
-        setIsAccepted(false);
-        setIsKeptUncertain(false);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setActiveCandidateWord(data.leadingCandidate || 'sauce');
+          setIsAccepted(false);
+          setIsKeptUncertain(false);
+          return;
+        }
       }
     } catch (e) {
-      console.error('Failed to recover word from API:', e);
+      console.warn('Backend recovery API unavailable, using client-side heuristic:', e);
     }
+
+    // Client-side linguistic fallback for static environments like GitHub Pages
+    const lower = utterance.toLowerCase();
+    let leading = 'sauce';
+    if (lower.includes('coffee') || lower.includes('drink') || lower.includes('also get')) {
+      leading = 'coffee';
+    } else if (lower.includes('pasta') || lower.includes('food')) {
+      leading = 'sauce';
+    } else if (lower.includes('meeting') || lower.includes('schedule')) {
+      leading = 'quarterly';
+    }
+    setActiveCandidateWord(leading);
+    setIsAccepted(false);
+    setIsKeptUncertain(false);
   };
 
   // Handle message selection
