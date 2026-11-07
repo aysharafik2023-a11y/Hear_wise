@@ -12,6 +12,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+      // If uncompiled source file is served directly by GitHub Pages (raw main.tsx), redirect to /docs/
+      window.addEventListener('DOMContentLoaded', function() {
+        var isUncompiled = document.querySelector('script[src*="main.tsx"]');
+        if (isUncompiled && window.location.hostname.endsWith('github.io')) {
+          var p = window.location.pathname;
+          if (!p.endsWith('/')) p += '/';
+          if (!p.includes('/docs/')) {
+            window.location.replace(p + 'docs/');
+          }
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
