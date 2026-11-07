@@ -1,0 +1,6 @@
+{
+  "name": "HearWise AI",
+  "description": "Real-Time Missing Speech Recovery for Hearing-Aid and Cochlear-Implant Users. Fill the missing words. Hear the full conversation.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
